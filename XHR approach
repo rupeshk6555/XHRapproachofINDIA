@@ -1,0 +1,26 @@
+var xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function () {
+  if (xhr.readyState == 4 && xhr.status == 200) {
+    var data = JSON.parse(xhr.responseText);
+
+    // Find the details for India
+    var indiaDetails = data.find(function (country) {
+      return country.name.common === 'India';
+    });
+
+    // Combine the details into a single string using template literals
+    console.log(
+      `Country name: ${indiaDetails.name.common}\n` +
+        `Currency: ${indiaDetails.currencies.INR.name} - Indian Rupee\n` +
+        `Capital: ${indiaDetails.capital[0]}\n` +
+        `Region: ${indiaDetails.region}\n` +
+        `Language: ${Object.keys(indiaDetails.languages).join(', ')}\n` +
+        `Population: ${indiaDetails.population}\n` +
+        `Country Flag image URL: ${indiaDetails.flags.png}`
+    );
+  }
+};
+
+xhr.open('GET', 'https://restcountries.com/v3.1/all');
+xhr.send();
